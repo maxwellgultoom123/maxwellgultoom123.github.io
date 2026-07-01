@@ -3,169 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portofolio | Maxwell Gultom</title>
+    <title>Maxwell Gultom | Portfolio</title>
     <style>
-        /* Gaya Dasar Website */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* Reset & Base Styles */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
-            color: #333;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0b0c10; /* Void background - tidak hitam pekat */
+            color: #c5c6c7;
+            min-height: 100vh;
             line-height: 1.6;
         }
 
-        /* Bagian Atas / Profil */
-        .header {
-            background: linear-gradient(135deg, #007eed, #0056b3);
-            color: white;
-            text-align: center;
-            padding: 60px 20px;
+        /* Container utama */
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 5px solid white;
-            object-fit: cover;
-            margin-bottom: 15px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+        /* Bagian Profil Akhir/Minimalis */
+        .profile-section {
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #1f2833;
         }
 
-        .header h1 {
-            margin: 10px 0 5px 0;
-            font-size: 2.5rem;
-        }
-
-        .header p {
-            margin: 0;
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        /* Konten Utama */
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            text-align: center;
-            border-bottom: 3px solid #007eed;
-            display: inline-block;
-            padding-bottom: 5px;
-            margin-bottom: 30px;
-            color: #007eed;
-        }
-
-        /* Layout Kartu Portofolio (Grid) */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        .profile-flex {
+            display: flex;
+            align-items: center;
             gap: 25px;
         }
 
-        /* Kartu Proyek */
-        .portfolio-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .portfolio-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .portfolio-img {
-            width: 100%;
-            height: 200px;
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
             object-fit: cover;
-            background-color: #e9ecef; /* Warna pelindung sebelum foto dimuat */
+            border: 1px solid #45f3ff; /* Aksen neon tipis agar hidup */
+            background-color: #1f2833;
         }
 
-        .portfolio-info {
-            padding: 20px;
+        .profile-text h1 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: -0.5px;
         }
 
-        .portfolio-info h3 {
-            margin: 0 0 10px 0;
-            color: #222;
+        .profile-text p {
+            font-size: 1rem;
+            color: #66fcf1; /* Warna aksen teks cyantific */
+            font-weight: 400;
         }
 
-        .portfolio-info p {
-            margin: 0;
-            color: #666;
-            font-size: 0.95rem;
+        /* Galeri Grid Portofolio (5 Foto) */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
 
-        /* Bagian Bawah / Footer */
-        .footer {
-            text-align: center;
-            padding: 30px;
-            background-color: #222;
-            color: white;
-            margin-top: 60px;
+        /* Kartu Proyek */
+        .project-card {
+            background-color: #151922; /* Kontras tipis dengan background utama */
+            border: 1px solid #1f2833;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Efek Hover Kartu */
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: #66fcf1;
+            box-shadow: 0 10px 20px rgba(102, 252, 241, 0.05);
+        }
+
+        /* Wadah Gambar */
+        .img-container {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background-color: #0b0c10;
+            position: relative;
+        }
+
+        .project-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Zoom foto saat hover */
+        .project-card:hover .project-img {
+            transform: scale(1.04);
+        }
+
+        /* Deskripsi teks proyek */
+        .project-info {
+            padding: 24px;
+            transition: transform 0.4s ease;
+        }
+
+        .project-info h3 {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .project-info p {
             font-size: 0.9rem;
+            color: #858b94;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #45a29e;
+            padding-top: 20px;
+            border-top: 1px solid #1f2833;
+        }
+
+        /* Responsif untuk HP */
+        @media (max-width: 600px) {
+            .profile-flex {
+                flex-direction: column;
+                text-align: center;
+            }
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- BAGIAN PROFIL UTAMA -->
-    <header class="header">
-        <!-- Gantilah URL gambar di bawah ini dengan foto profil Anda nanti -->
-        <img src="https://via.placeholder.com/150" alt="Foto Profil Saya" class="profile-img">
-        <h1>Maxwell Gultom</h1>
-        <p>IoT Enthusiast & Web Developer</p>
-    </header>
-
-    <!-- BAGIAN KARYA / PORTOFOLIO -->
-    <div class="container">
-        <center><h2 class="section-title">Proyek & Karya Saya</h2></center>
+    <div class="wrapper">
         
-        <div class="portfolio-grid">
-            
-            <!-- KARTU PROYEK 1 -->
-            <div class="portfolio-card">
-                <!-- Tempat Foto Proyek 1 -->
-                <img src="https://via.placeholder.com/400x250" alt="Proyek 1" class="portfolio-img">
-                <div class="portfolio-info">
-                    <h3>Aplikasi Chat MQTT</h3>
-                    <p>Membuat aplikasi chat berbasis web interaktif menggunakan Paho MQTT client dan broker HiveMQ untuk komunikasi data secara real-time.</p>
+        <!-- PROFIL -->
+        <section class="profile-section">
+            <div class="profile-flex">
+                <!-- FOTO 1: Foto Profil Utama -->
+                <img src="profil.jpg" alt="Maxwell Gultom" class="avatar">
+                <div class="profile-text">
+                    <h1>Maxwell Gultom</h1>
+                    <p>IoT Architecture & Web Experiments</p>
                 </div>
             </div>
+        </section>
 
-            <!-- KARTU PROYEK 2 -->
-            <div class="portfolio-card">
-                <!-- Tempat Foto Proyek 2 -->
-                <img src="https://via.placeholder.com/400x250" alt="Proyek 2" class="portfolio-img">
-                <div class="portfolio-info">
+        <!-- PORTFOLIO GRID -->
+        <main class="portfolio-grid">
+
+            <!-- FOTO 2: Proyek MQTT -->
+            <article class="project-card">
+                <div class="img-container">
+                    <img src="proyek1.jpg" alt="Aplikasi Chat Real-time" class="project-img">
+                </div>
+                <div class="project-info">
+                    <h3>Paho MQTT Chat Interface</h3>
+                    <p>Eksperimen pertukaran data real-time menggunakan broker HiveMQ dan JavaScript client untuk komunikasi antar device via web browser.</p>
+                </div>
+            </article>
+
+            <!-- FOTO 3: Proyek ESP32-CAM -->
+            <article class="project-card">
+                <div class="img-container">
+                    <img src="proyek2.jpg" alt="Kontrol Otomasi Servo" class="project-img">
+                </div>
+                <div class="project-info">
                     <h3>ESP32-CAM Telegram Bot</h3>
-                    <p>Sistem kontrol servo motor jarak jauh menggunakan modul ESP32-CAM yang terintegrasi dengan bot Telegram untuk pemantauan berbasis IoT.</p>
+                    <p>Integrasi hardware mikrokontroler dengan Telegram API guna mengontrol gerakan motor servo dan melakukan monitoring visual jarak jauh.</p>
                 </div>
-            </div>
+            </article>
 
-            <!-- KARTU PROYEK 3 -->
-            <div class="portfolio-card">
-                <!-- Tempat Foto Proyek 3 -->
-                <img src="https://via.placeholder.com/400x250" alt="Proyek 3" class="portfolio-img">
-                <div class="portfolio-info">
-                    <h3>Desain & Custom Pakaian</h3>
-                    <p>Eksperimen seni kain dan kustomisasi pakaian kreatif, memadukan seni grafis manual langsung di atas media tekstil.</p>
+            <!-- FOTO 4: Proyek Kreatif/Custom -->
+            <article class="project-card">
+                <div class="img-container">
+                    <img src="proyek3.jpg" alt="Eksperimen Seni Tekstil" class="project-img">
                 </div>
-            </div>
+                <div class="project-info">
+                    <h3>Fabric Customization</h3>
+                    <p>Proyek eksplorasi media seni rupa alternatif dengan mengaplikasikan gambar ilustrasi manual langsung di atas permukaan kain tekstil.</p>
+                </div>
+            </article>
 
-        </div>
+            <!-- FOTO 5: Proyek Tambahan (Eksperimen/Studi) -->
+            <article class="project-card">
+                <div class="img-container">
+                    <img src="proyek4.jpg" alt="Studi Kasus Sains" class="project-img">
+                </div>
+                <div class="project-info">
+                    <h3>Biological System Analysis</h3>
+                    <p>Catatan studi analisis mengenai mekanisme regenerasi biologis sel pada makhluk hidup dan strukturnya yang adaptif.</p>
+                </div>
+            </article>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>&copy; 2026 Maxwell Gultom. Built inside the void.</p>
+        </footer>
+
     </div>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <p>&copy; 2026 Maxwell Gultom. Dibuat dengan GitHub Pages.</p>
-    </footer>
 
 </body>
 </html>
