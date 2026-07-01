@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <title>Maxwell Gultom | Portfolio</title>
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            /* Latar Belakang Bersuasana Void Angkasa Mendalam */
+            background: radial-gradient(circle at 50% 50%, #121620 0%, #07080b 80%);
+            background-color: #0b0c10;
+            color: #c5c6c7;
+            min-height: 100vh;
+            line-height: 1.6;
+            zoom: 0.95;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ELEMEN ANIMASI ANGKASA JATUH (KANAN & KIRI) */
+        .space-container-left, .space-container-right {
+            position: fixed;
+            top: 0;
+            width: 120px;
+            height: 100vh;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .space-container-left { left: 10px; }
+        .space-container-right { right: 10px; }
+
+        .star-fall {
+            position: absolute;
+            background: linear-gradient(to bottom, transparent, #66fcf1);
+            width: 2px;
+            height: 40px;
+            opacity: 0.6;
+            animation: fall 5s linear infinite;
+        }
+
+        /* Variasi letak dan delay star-fall agar turun bergantian pas 5 detik */
+        .sf1 { left: 20%; animation-delay: 0s; }
+        .sf2 { left: 50%; animation-direction: reverse; animation-delay: 2.5s; }
+        .sf3 { left: 80%; animation-delay: 1.2s; }
+        .sf4 { left: 35%; animation-delay: 3.7s; }
+
+        @keyframes fall {
+            0% { top: -50px; opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { top: 100vh; opacity: 0; }
+        }
+
+        /* NOTIFIKASI LOGIN CUSTOM */
+        .custom-alert {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #151922;
+            border: 1px solid #66fcf1;
+            color: #66fcf1;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(102, 252, 241, 0.2);
+            z-index: 9999;
+            transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .custom-alert.show {
+            top: 30px;
+        }
+
+        /* HALAMAN LOGIN */
+        #login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #151922 0%, #07080b 100%);
+            position: relative;
+            z-index: 5;
+        }
+
+        .login-box {
+            background-color: #151922;
+            border: 1px solid #1f2833;
+            padding: 40px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .login-box h2 {
+            color: #ffffff;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: #858b94;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: #0b0c10;
+            border: 1px solid #1f2833;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #66fcf1;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: transparent;
+            border: 1px solid #66fcf1;
+            color: #66fcf1;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #66fcf1;
+            color: #0b0c10;
+            box-shadow: 0 0 15px rgba(102, 252, 241, 0.2);
+        }
+
+        /* STYLE PORTFOLIO UTAMA */
+        #main-content {
+            display: none; /* Disembunyikan sebelum masuk */
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Navigasi Menu Place */
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #1f2833;
+            padding-bottom: 15px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: #858b94;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: color 0.3s;
+        }
+
+        .nav-btn.active {
+            color: #66fcf1;
+            border-bottom: 2px solid #66fcf1;
+        }
+
+        .page-place {
+            display: none;
+        }
+
+        .page-place.active {
+            display: block;
+        }
+
+        /* Container utama - Diturunkan max-width agar tampilan satu persatu seimbang */
+        .wrapper {
+            max-width: 780px; 
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Bagian Profil Akhir/Minimalis */
+        .profile-section {
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #1f2833;
+        }
+
+        .profile-flex {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #45f3ff;
+            background-color: #1f2833;
+        }
+
+        .about-main-img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #1f2833;
+            margin-bottom: 25px;
+        }
+
+        /* Welcome Banner */
+        .welcome-section {
+            background-color: #151922;
+            border: 1px solid #1f2833;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .welcome-section h2 {
+            color: #ffffff;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .welcome-img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-top: 15px;
+            border: 1px solid #0b0c10;
+        }
+
+        /* RUANG KOSONG PENJELASAN / FUN FACT */
+        .fun-fact-box {
+            background: linear-gradient(135deg, #151922 0%, #11141b 100%);
+            border-left: 3px solid #66fcf1;
+            border-right: 1px solid #1f2833;
+            border-top: 1px solid #1f2833;
+            border-bottom: 1px solid #1f2833;
+            border-radius: 0 8px 8px 0;
+            padding: 24px;
+            margin: 45px 0;
+        }
+
+        .fun-fact-box h4 {
+            color: #66fcf1;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .fun-fact-box p {
+            font-size: 0.9rem;
+            color: #858b94;
+        }
+
+        .profile-text h1 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-text p {
+            font-size: 1rem;
+            color: #66fcf1;
+            font-weight: 400;
+        }
+
+        /* Menampilkan Foto Proyek Satu Per Satu */
+        .portfolio-list-one-by-one {
+            display: flex;
+            flex-direction: column;
+            gap: 45px;
+        }
+
+        /* Kartu Proyek */
+        .project-card {
+            background-color: #151922; 
+            border: 1px solid #1f2833;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: #66fcf1;
+            box-shadow: 0 10px 20px rgba(102, 252, 241, 0.05);
+        }
+
+        .img-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background-color: #0b0c10;
+            position: relative;
+        }
+
+        .project-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-card:hover .project-img {
+            transform: scale(1.04);
+        }
+
+        .project-info {
+            padding: 24px;
+        }
+
+        .project-info h3 {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .project-info p {
+            font-size: 0.9rem;
+            color: #858b94;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #45a29e;
+            padding-top: 20px;
+            border-top: 1px solid #1f2833;
+        }
+
+        @media (max-width: 600px) {
+            .profile-flex {
+                flex-direction: column;
+                text-align: center;
+            }
+            .space-container-left, .space-container-right {
+                display: none; /* Hilangkan hiasan samping di layar HP kecil */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMASI JATUH BER-TEMA ANGKASA (KIRI & KANAN) -->
+    <div class="space-container-left">
+        <div class="star-fall sf1"></div>
+        <div class="star-fall sf2"></div>
+        <div class="star-fall sf3"></div>
+        <div class="star-fall sf4"></div>
+    </div>
+    <div class="space-container-right">
+        <div class="star-fall sf1"></div>
+        <div class="star-fall sf2"></div>
+        <div class="star-fall sf3"></div>
+        <div class="star-fall sf4"></div>
+    </div>
+
+    <!-- ELEMEN NOTIFIKASI CUSTOM (OTOMATIS HILANG 3 DETIK) -->
+    <div id="login-alert" class="custom-alert">
+        Anda berhasil login!
+    </div>
+
+    <!-- 1. PLACE / HALAMAN LOGIN -->
+    <div id="login-page">
+        <div class="login-box">
+            <h2>Void Authentication</h2>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Masukkan username">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <!-- Menambahkan trigger onkeydown Enter untuk memproses input -->
+                <input type="password" id="password" placeholder="Masukkan password" onkeydown="if(event.key === 'Enter') checkLogin()">
+            </div>
+            <button class="login-btn" onclick="checkLogin()">Login</button>
+        </div>
+    </div>
+
+    <!-- 2. KONTEN UTAMA PORTOFOLIO -->
+    <div id="main-content">
+        <div class="wrapper">
+            
+            <!-- MENU NAVIGASI TEMPAT / PLACE -->
+            <nav class="navigation">
+                <button id="btn-home" class="nav-btn active" onclick="switchPlace('home')">Home</button>
+                <button id="btn-about" class="nav-btn" onclick="switchPlace('about')">About</button>
+            </nav>
+
+            <!-- ================= PLACE: HOME ================= -->
+            <div id="place-home" class="page-place active">
+                
+                <!-- BAGIAN WELCOME DI AWAL -->
+                <div class="welcome-section">
+                    <h2>WELCOME TO WEB KECEBONG!!!!!</h2>
+                    <p>WLEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE.</p>
+                    <img src="welcome1.jpeg" alt="Welcome Image" class="welcome-img">
+                </div>
+
+                <!-- DAFTAR PROYEK FOTO SATU PER SATU -->
+                <div class="portfolio-list-one-by-one">
+
+                    <!-- FOTO 2: Proyek MQTT -->
+                    <article class="project-card">
+                        <div class="img-container">
+                            <img src="warna.jpeg" alt="Aplikasi Chat Real-time" class="project-img">
+                        </div>
+                        <div class="project-info">
+                            <h3>COLORING TIME!!!</h3>
+                            <p>when painting with watercolors, all the burdens suddenly feel gone without a trace.</p>
+                        </div>
+                    </article>
+
+                    <!-- FOTO 3: Proyek ESP32-CAM -->
+                    <article class="project-card">
+                        <div class="img-container">
+                            <img src="trio.jpeg" alt="Kontrol Otomasi Servo" class="project-img">
+                        </div>
+                        <div class="project-info">
+                            <h3>TRIOO MAUT NI BOSS</h3>
+                            <p>IDK GATAU MO ISI APA.</p>
+                        </div>
+                    </article>
+
+                    <!-- ================= PERTENGAHAN PERJALANAN: RUANG FUN FACT ================= -->
+                    <div class="fun-fact-box">
+                        <h4>🌌 FUN FACT FUN FACT FUN FACT FUN FACT</h4>
+                        <p>DID YOU KNOW????? kecebong tu gitu gitu gitu lohh, gapercaya yaaa??? .</p>
+                    </div>
+
+                    <!-- FOTO 4: Proyek Kreatif/Custom -->
+                    <article class="project-card">
+                        <div class="img-container">
+                            <img src="unggun.jpeg" alt="Eksperimen Seni Tekstil" class="project-img">
+                        </div>
+                        <div class="project-info">
+                            <h3>campfire teenssssssssssssssssssssss</h3>
+                            <p>a cold place makes my heart feel warm.</p>
+                        </div>
+                    </article>
+
+                    <!-- FOTO 5: Proyek Tambahan -->
+                    <article class="project-card">
+                        <div class="img-container">
+                            <img src="garden2.jpeg" alt="Studi Kasus Sains" class="project-img">
+                        </div>
+                        <div class="project-info">
+                            <h3>GARDEN MENUJU JOB PENDETA</h3>
+                            <p>bisa di liat dari photoo ini, ini adalah progress yang dimana garden lagi melakukan aktivitas setiap hari yaitu baca alkitab, hebat kamu garden.</p>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+
+            <!-- ================= PLACE: ABOUT ================= -->
+            <div id="place-about" class="page-place">
+                <section class="profile-section">
+                    <img src="kce.jpeg" alt="Maxwell Gultom" class="about-main-img">
+                    <div class="profile-flex">
+                        <img src="kce.jpeg" alt="Maxwell Gultom" class="avatar">
+                        <div class="profile-text">
+                            <h1>Maxwell Gultom</h1>
+                            <p>boring</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- FOOTER -->
+            <footer>
+                <p>&copy; lololololololololololololololololololololololololol.</p>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        function checkLogin() {
+            var user = document.getElementById("username").value;
+            var pass = document.getElementById("password").value;
+
+            if (user === "kece" && pass === "bong") {
+                // Tampilkan banner notifikasi tanpa memunculkan alert windows bawaan browser
+                var alertBox = document.getElementById("login-alert");
+                alertBox.classList.add("show");
+
+                // Jeda proses transisi perpindahan halaman sedikit biar animasi kemunculan notif kelihatan smooth
+                setTimeout(function() {
+                    document.getElementById("login-page").style.display = "none";
+                    document.getElementById("main-content").style.display = "block";
+                }, 400);
+
+                // Set timer otomatis agar notifikasi meluncur naik ke atas/hilang sendiri sesudah lewat waktu pas 3 detik
+                setTimeout(function() {
+                    alertBox.classList.remove("show");
+                }, 3000);
+                
+            } else {
+                alert("Username atau Password salah. Silakan coba lagi.");
+            }
+        }
+
+        function switchPlace(placeName) {
+            document.getElementById("btn-home").classList.remove("active");
+            document.getElementById("btn-about").classList.remove("active");
+            document.getElementById("place-home").classList.remove("active");
+            document.getElementById("place-about").classList.remove("active");
+
+            if (placeName === 'home') {
+                document.getElementById("btn-home").classList.add("active");
+                document.getElementById("place-home").classList.add("active");
+            } else if (placeName === 'about') {
+                document.getElementById("btn-about").classList.add("active");
+                document.getElementById("place-about").classList.add("active");
+            }
+        }
+    </script>
+
+</body>
+</html>
