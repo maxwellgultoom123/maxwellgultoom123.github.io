@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maxwell Gultom | Portfolio</title>
     <style>
         /* Reset & Base Styles */
@@ -20,7 +20,6 @@
             color: #c5c6c7;
             min-height: 100vh;
             line-height: 1.6;
-            zoom: 0.95;
             position: relative;
             overflow-x: hidden;
         }
@@ -80,7 +79,7 @@
             top: 30px;
         }
 
-        /* HALAMAN LOGIN */
+        /* HALAMAN LOGIN + HIBURAN LATAR BELAKANG */
         #login-page {
             display: flex;
             justify-content: center;
@@ -89,17 +88,61 @@
             background: radial-gradient(circle at center, #151922 0%, #07080b 100%);
             position: relative;
             z-index: 5;
+            overflow: hidden;
+        }
+
+        /* Roket Terbang */
+        .rocket-animation {
+            position: absolute;
+            bottom: -100px;
+            left: 15%;
+            font-size: 3rem;
+            filter: drop-shadow(0 0 10px #66fcf1);
+            animation: launchRocket 7s linear infinite;
+            pointer-events: none;
+            user-select: none;
+            z-index: 1;
+        }
+
+        @keyframes launchRocket {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(-10deg); opacity: 0; }
+        }
+
+        /* Funny Alien Random */
+        .funny-alien {
+            position: absolute;
+            bottom: -120px;
+            right: 12%;
+            font-size: 4rem;
+            animation: alienPrank 9s ease-in-out infinite;
+            pointer-events: none;
+            user-select: none;
+            z-index: 1;
+        }
+
+        @keyframes alienPrank {
+            0% { transform: translateY(0) scale(1); }
+            30% { transform: translateY(-160px) scale(1.1) rotate(15deg); }
+            45% { transform: translateY(-160px) scale(1.1) rotate(-15deg); }
+            60% { transform: translateY(-160px) scale(1) rotate(0deg); }
+            75% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(0) scale(1); }
         }
 
         .login-box {
             background-color: #151922;
-            border: 1px solid #1f2833;
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #66fcf1;
             padding: 40px;
-            border-radius: 8px;
+            border-radius: 12px;
             width: 100%;
             max-width: 360px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 10;
         }
 
         .login-box h2 {
@@ -125,7 +168,7 @@
             width: 100%;
             padding: 12px;
             background-color: #0b0c10;
-            border: 1px solid #1f2833;
+            border: 2px solid #1f2833;
             border-radius: 6px;
             color: #ffffff;
             font-size: 0.95rem;
@@ -141,7 +184,7 @@
             width: 100%;
             padding: 12px;
             background-color: transparent;
-            border: 1px solid #66fcf1;
+            border: 2px solid #66fcf1;
             color: #66fcf1;
             border-radius: 6px;
             font-size: 1rem;
@@ -221,7 +264,7 @@
             height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1px solid #45f3ff;
+            border: 3px solid #45f3ff;
             background-color: #1f2833;
         }
 
@@ -229,8 +272,9 @@
             width: 100%;
             aspect-ratio: 16 / 9;
             object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #1f2833;
+            border-radius: 12px;
+            border: 4px solid #000;
+            box-shadow: 5px 5px 0px #45f3ff;
             margin-bottom: 25px;
         }
 
@@ -254,9 +298,10 @@
             width: 100%;
             aspect-ratio: 16 / 9;
             object-fit: cover;
-            border-radius: 6px;
+            border-radius: 12px;
             margin-top: 15px;
-            border: 1px solid #0b0c10;
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #66fcf1;
         }
 
         /* RUANG KOSONG PENJELASAN / FUN FACT */
@@ -304,13 +349,30 @@
             gap: 45px;
         }
 
-        /* Kartu Proyek */
+        /* EFFECT SCROLLING KEREN (Fade In & Slide Up modern via CSS Scroll Timeline) */
+        @keyframes scrollReveal {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Kartu Proyek + Bingkai Cartoon Square */
         .project-card {
             background-color: #151922; 
             border: 1px solid #1f2833;
             border-radius: 8px;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            
+            /* Pasang Efek Scroll ke kartu */
+            animation: scrollReveal linear both;
+            animation-timeline: view();
+            animation-range: entry 5% cover 30%;
         }
 
         .project-card:hover {
@@ -319,12 +381,17 @@
             box-shadow: 0 10px 20px rgba(102, 252, 241, 0.05);
         }
 
+        /* Bingkai Cartoon Square untuk Foto */
         .img-container {
-            width: 100%;
+            width: 92%;
+            margin: 20px auto 0 auto;
             aspect-ratio: 16 / 9;
             overflow: hidden;
             background-color: #0b0c10;
             position: relative;
+            border: 4px solid #000;
+            border-radius: 12px;
+            box-shadow: 5px 5px 0px #66fcf1;
         }
 
         .project-img {
@@ -370,7 +437,24 @@
                 text-align: center;
             }
             .space-container-left, .space-container-right {
-                display: none; /* Hilangkan hiasan samping di layar HP kecil */
+                /* display: none; -> Remove to keep on mobile */
+                width: 50px; /* Make narrower on mobile */
+                z-index: -1; /* Place behind main content on very narrow screens */
+            }
+            .space-container-left { left: 5px; }
+            .space-container-right { right: 5px; }
+
+            .rocket-animation, .funny-alien {
+                /* display: none; -> Remove to keep on mobile */
+                z-index: 1; /* Keep visible on mobile login page */
+            }
+            .rocket-animation {
+                left: 5%;
+                font-size: 2rem;
+            }
+            .funny-alien {
+                right: 4%;
+                font-size: 2.5rem;
             }
         }
     </style>
@@ -398,8 +482,12 @@
 
     <!-- 1. PLACE / HALAMAN LOGIN -->
     <div id="login-page">
+        <!-- HIBURAN LATAR BELAKANG LOGIN -->
+        <div class="rocket-animation">🚀</div>
+        <div class="funny-alien">👽</div>
+        
         <div class="login-box">
-            <h2>Login login login login login login login login login lol</h2>
+            <h2>Void Authentication</h2>
             <div class="input-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" placeholder="Masukkan username">
@@ -503,9 +591,9 @@
                 </section>
             </div>
 
-            <!-- FOOTER -->
+            <!-- Footer -->
             <footer>
-                <p>&copy; lololololololololololololololololololololololololol.</p>
+                <p>&copy; 2026 Maxwell Gultom. Built inside the void.</p>
             </footer>
 
         </div>
